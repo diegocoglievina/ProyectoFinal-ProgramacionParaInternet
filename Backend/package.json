@@ -1,0 +1,23 @@
+{
+  "name": "proyecto_final_backend",
+  "version": "1.0.0",
+  "description": "Este es el package.json correspondiente al proyecto final de la materia de Programación para Internet",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1", 
+    "start": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "Alberto Rendon; Diego Coglievina; Jesus Orihuela",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "connect": "^3.7.0",
+    "express": "^4.19.2",
+    "mongodb": "^6.5.0",
+    "multiparty": "^4.2.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
