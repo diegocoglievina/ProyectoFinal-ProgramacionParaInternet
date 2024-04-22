@@ -1,6 +1,10 @@
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://coglievinadiego:Coglievina14@programacionparainterne.9nb3qvf.mongodb.net/admin?retryWrites=true&loadBalanced=false&replicaSet=atlas-rebena-shard-0&readPreference=primary&srvServiceName=mongodb&connectTimeoutMS=10000&w=majority&authSource=admin&authMechanism=SCRAM-SHA-1";
+const username = 'coglievinadiego'; // Replace with dynamic values as needed
+const password = 'Coglievina14';     // Replace with dynamic values as needed
+
+const uri = `mongodb+srv://${username}:${password}@programacionparainterne.9nb3qvf.mongodb.net/admin?retryWrites=true&loadBalanced=false&replicaSet=atlas-rebena-shard-0&readPreference=primary&srvServiceName=mongodb&connectTimeoutMS=10000&w=majority&authSource=admin&authMechanism=SCRAM-SHA-1`;
+
 let dbName = "Proyecto"
 let collectionName = "Projects"
 
