@@ -1,11 +1,12 @@
-var express = require('express');
-var ProjectController = require('../controllers/project');
+const express = require('express');
+const ProjectController = require('../controllers/project');
 
-var router = express.Router();
+const router = express.Router();
 
-router.get('/home', ProjectController.home);
-router.post('/test', ProjectController.test);
+router.get('/', ProjectController.home);
+router.get('/test', ProjectController.test);
 
-// Nuevo
-router.post('/save-project', ProjectController.saveProject)
-module.exports = router;    
+// Update the route to match the controller method name
+router.post('/projects', ProjectController.saveProject);
+
+module.exports = router;

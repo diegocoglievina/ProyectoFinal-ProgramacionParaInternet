@@ -1,42 +1,57 @@
-var app = require('./app')
-var port = 3700;
-
+const express = require('express');
 const { MongoClient, ServerApiVersion } = require('mongodb');
+const app = express();
+const port = 3700;
 
-const username = 'coglievinadiego'; 
-const password = 'Coglievina14';   
+const username = 'coglievinadiego';
+const password = 'Coglievina14';
 const uri = `mongodb+srv://${username}:${password}@programacionparainterne.9nb3qvf.mongodb.net/admin?retryWrites=true&loadBalanced=false&replicaSet=atlas-rebena-shard-0&readPreference=primary&srvServiceName=mongodb&connectTimeoutMS=10000&w=majority&authSource=admin&authMechanism=SCRAM-SHA-1`;
 
-let dbName = "Proyecto"
-let collectionName = "Projects"
+const dbName = "Proyecto";
+const collectionName = "Projects";
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
+async function connectToDatabase() {
+  const client = new MongoClient(uri, {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    }
+  });
+
+  try {
+    await client.connect();
+    console.log("Connected to the database");
+    return client.db(dbName).collection(collectionName);
+  } catch (error) {
+    console.error("Error connecting to the database:", error);
+    throw error;
+  }
+}
+
+app.use(express.json());
+
+// Routes
+app.get('/', (req, res) => {
+  res.status(200).send({ message: "Soy la home" });
+});
+
+app.get('/test', (req, res) => {
+  res.status(200).send({ message: "Soy test del controlador project" });
+});
+
+app.post('/projects', async (req, res) => {
+  try {
+    const collection = await connectToDatabase();
+    const project = req.body;
+    const result = await collection.insertOne(project);
+    res.status(201).send({ message: "Project saved successfully", projectId: result.insertedId });
+  } catch (error) {
+    console.error("Error saving project:", error);
+    res.status(500).send({ message: "Error saving project" });
   }
 });
 
-async function run() {
-    try {
-      
-      await client.connect();
-      
-      const collection = client.db(dbName).collection(collectionName);
-      
-      // Find all documents in the collection
-      const cursor = collection.find({});
-
-      // Iterate over the documents and log each one
-      await cursor.forEach(doc => console.log(doc));
-      app.listen(port, () => {
-            console.log("Listening on port 3700")
-      });
-    } finally {
-      // Ensures that the client will close when you finish/error
-      await client.close();
-    }
-  }
-  run().catch(console.dir);
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
