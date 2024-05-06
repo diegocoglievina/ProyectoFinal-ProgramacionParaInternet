@@ -8,5 +8,7 @@ router.get('/test', ProjectController.test);
 
 // Update the route to match the controller method name
 router.post('/projects', ProjectController.saveProject);
+router.delete('/projects/:id', ProjectController.deleteProject);
+router.put('/projects/:id', ProjectController.updateProject);
 
 module.exports = router;

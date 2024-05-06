@@ -1,5 +1,5 @@
 const express = require('express');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = 3700;
 
@@ -49,6 +49,43 @@ app.post('/projects', async (req, res) => {
   } catch (error) {
     console.error("Error saving project:", error);
     res.status(500).send({ message: "Error saving project" });
+  }
+});
+
+
+app.delete('/projects/:id', async (req, res) => {
+  try {
+    const collection = await connectToDatabase();
+    const projectId = req.params.id;
+    const result = await collection.deleteOne({ _id: new ObjectId(projectId) });
+    if (result.deletedCount === 1) {
+      res.status(200).send({ message: "Project deleted successfully" });
+    } else {
+      res.status(404).send({ message: "Project not found" });
+    }
+  } catch (error) {
+    console.error("Error deleting project:", error);
+    res.status(500).send({ message: "Error deleting project" });
+  }
+});
+
+app.put('/projects/:id', async (req, res) => {
+  try {
+    const collection = await connectToDatabase();
+    const projectId = req.params.id;
+    const updatedProject = req.body;
+    const result = await collection.updateOne(
+      { _id: new ObjectId(projectId) },
+      { $set: updatedProject }
+    );
+    if (result.modifiedCount === 1) {
+      res.status(200).send({ message: "Project updated successfully" });
+    } else {
+      res.status(404).send({ message: "Project not found" });
+    }
+  } catch (error) {
+    console.error("Error updating project:", error);
+    res.status(500).send({ message: "Error updating project" });
   }
 });
 
